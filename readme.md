@@ -9,9 +9,8 @@ Waht you can find here so far:
 
 # Purpose and copyrights 
 
-This source code is realesed for educational purposes of how to use KickC (mixed with some assembly code) to create little C64 productions like this one.
+This source code is realesed for educational purposes of how to use KickC Oscar64 (mixed with some assembly code) to create little C64 productions.
 
-The source code and graphics assets (except colorfull dragon by Katon/Lepsi De) are copyrighted to Tomasz 'Carrion' Mielnik. Music is copyrighted to Psych858o of Multistyle Labs. 
 
 # Licensing details:
 

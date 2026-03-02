@@ -6,6 +6,8 @@
 
 This is a source code and resources of the small invitation intro for for the Commodore C64.
 
+The source code and graphics assets (except colorfull dragon by Katon/Lepsi De) are copyrighted to Tomasz 'Carrion' Mielnik. Music is copyrighted to Psych858o of Multistyle Labs.
+
 This program was created as a invitation for Moonshine Dragons and Teddy Beer parties in 2022.
 You can find the invitation intro here on CSDB.dk:
 https://csdb.dk/release/?id=214452
