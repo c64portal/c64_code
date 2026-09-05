@@ -22,9 +22,11 @@
   const opacityInput = document.getElementById("opacityInput");
   const undoBtn = document.getElementById("undoBtn");
   const redoBtn = document.getElementById("redoBtn");
+  const themeBtn = document.getElementById("themeBtn");
   const manualBtn = document.getElementById("manualBtn");
   const manualView = document.getElementById("manualView");
   const workbench = document.querySelector(".workbench");
+  const root = document.documentElement;
 
   const data = new Uint8Array(COLS * ROWS);
   const undoStack = [];
@@ -39,6 +41,7 @@
   let activePointerId = null;
   let dragSnapshot = null;
   let lastCell = -1;
+  let theme = localStorage.getItem("fadeEditorTheme") || "light";
 
   function indexOf(x, y) {
     return x + y * COLS;
@@ -62,6 +65,10 @@
 
   function setStatus(text) {
     statusEl.textContent = text;
+  }
+
+  function cssColor(name) {
+    return getComputedStyle(root).getPropertyValue(name).trim();
   }
 
   function snapshot() {
@@ -106,7 +113,7 @@
 
   function drawBackground() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
-    ctx.fillStyle = "#cfd4db";
+    ctx.fillStyle = cssColor("--canvas-cell-bg");
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
     if (image) {
@@ -138,7 +145,7 @@
         ctx.globalAlpha = 1;
 
         if (showValuesInput.checked) {
-          ctx.fillStyle = "#ffffff";
+          ctx.fillStyle = cssColor("--cell-text");
           ctx.fillText(String(value), px + CELL / 2, py + CELL / 2 + 0.5);
         }
       }
@@ -151,7 +158,7 @@
     }
 
     ctx.beginPath();
-    ctx.strokeStyle = "rgba(17, 24, 39, 0.38)";
+    ctx.strokeStyle = cssColor("--editor-grid");
     ctx.lineWidth = 1;
 
     for (let x = 0; x <= COLS; x += 1) {
@@ -314,10 +321,20 @@
     setStatus(isVisible ? "Manual open." : "Ready. Left paint, right erase.");
   }
 
+  function setTheme(nextTheme) {
+    theme = nextTheme === "dark" ? "dark" : "light";
+    root.dataset.theme = theme;
+    themeBtn.textContent = theme === "dark" ? "Light mode" : "Dark mode";
+    themeBtn.setAttribute("aria-pressed", String(theme === "dark"));
+    localStorage.setItem("fadeEditorTheme", theme);
+    render();
+  }
+
   document.getElementById("loadFadeBtn").addEventListener("click", () => fadeInput.click());
   document.getElementById("loadImageBtn").addEventListener("click", () => imageInput.click());
   document.getElementById("saveFadeBtn").addEventListener("click", saveFade);
   document.getElementById("clearBtn").addEventListener("click", clearFade);
+  themeBtn.addEventListener("click", () => setTheme(theme === "dark" ? "light" : "dark"));
   manualBtn.addEventListener("click", () => setManualVisible(manualView.hidden));
 
   document.getElementById("prevBtn").addEventListener("click", () => setPhase(phase - 1));
@@ -391,5 +408,6 @@
   });
 
   updateHistoryButtons();
+  setTheme(theme);
   setPhase(1);
 })();

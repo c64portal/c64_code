@@ -11,6 +11,33 @@
   --accent: #0f766e;
   --warn: #b42318;
   --canvas-bg: #d4d8dd;
+  --canvas-cell-bg: #cfd4db;
+  --workspace-grid: rgba(25, 27, 31, 0.04);
+  --editor-grid: rgba(17, 24, 39, 0.38);
+  --cell-text: #ffffff;
+  --manual-dd: #384152;
+  --manual-code-bg: #ffffff;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #1f2329;
+  --panel: #272c33;
+  --ink: #edf0f3;
+  --muted: #aeb7c2;
+  --line: #49515c;
+  --button: #303741;
+  --button-hover: #d7dde5;
+  --button-hover-ink: #15181d;
+  --accent: #33c5b5;
+  --warn: #ff8a80;
+  --canvas-bg: #242a31;
+  --canvas-cell-bg: #303741;
+  --workspace-grid: rgba(215, 221, 229, 0.045);
+  --editor-grid: rgba(218, 226, 236, 0.24);
+  --cell-text: #ffffff;
+  --manual-dd: #c8d0da;
+  --manual-code-bg: #303741;
 }
 
 * {
@@ -61,10 +88,11 @@ input {
   gap: 8px;
 }
 
-#manualBtn[aria-pressed="true"] {
+#manualBtn[aria-pressed="true"],
+#themeBtn[aria-pressed="true"] {
   border-color: var(--accent);
   background: var(--accent);
-  color: #ffffff;
+  color: var(--button-hover-ink);
 }
 
 button {
@@ -163,8 +191,8 @@ input[type="checkbox"] {
   min-height: 100vh;
   padding: 18px;
   background:
-    linear-gradient(90deg, rgba(25, 27, 31, 0.04) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(25, 27, 31, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, var(--workspace-grid) 1px, transparent 1px),
+    linear-gradient(0deg, var(--workspace-grid) 1px, transparent 1px),
     var(--canvas-bg);
   background-size: 20px 20px;
 }
@@ -179,7 +207,7 @@ canvas {
   display: block;
   width: 100%;
   height: 100%;
-  background: #cfd4db;
+  background: var(--canvas-cell-bg);
   image-rendering: pixelated;
   touch-action: none;
   user-select: none;
@@ -251,14 +279,14 @@ canvas {
 
 .manual dd {
   margin: 0;
-  color: #384152;
+  color: var(--manual-dd);
 }
 
 .manual code {
   padding: 1px 5px;
   border: 1px solid var(--line);
   border-radius: 4px;
-  background: #ffffff;
+  background: var(--manual-code-bg);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.92em;
 }
