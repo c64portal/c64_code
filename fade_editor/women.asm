@@ -1,3 +1,10 @@
+//
+// This is example .asm file by Zielok / Miracles from his version of this tool
+// taken from: https://csdb.dk/release/?id=100002
+// use kickasm to assemble
+
+
+
 
 .var charcolour = $d800
 .var screencolour = $6000
