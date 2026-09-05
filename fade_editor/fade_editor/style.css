@@ -19,7 +19,9 @@
   --manual-code-bg: #ffffff;
 }
 
-:root[data-theme="dark"] {
+:root[data-theme="dark"],
+body[data-theme="dark"],
+body.theme-dark {
   color-scheme: dark;
   --bg: #1f2329;
   --panel: #272c33;

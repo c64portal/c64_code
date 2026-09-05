@@ -27,6 +27,7 @@
   const manualView = document.getElementById("manualView");
   const workbench = document.querySelector(".workbench");
   const root = document.documentElement;
+  const body = document.body;
 
   const data = new Uint8Array(COLS * ROWS);
   const undoStack = [];
@@ -41,7 +42,7 @@
   let activePointerId = null;
   let dragSnapshot = null;
   let lastCell = -1;
-  let theme = localStorage.getItem("fadeEditorTheme") || "light";
+  let theme = getSavedTheme();
 
   function indexOf(x, y) {
     return x + y * COLS;
@@ -65,6 +66,22 @@
 
   function setStatus(text) {
     statusEl.textContent = text;
+  }
+
+  function getSavedTheme() {
+    try {
+      return localStorage.getItem("fadeEditorTheme") || "light";
+    } catch (error) {
+      return "light";
+    }
+  }
+
+  function saveTheme(nextTheme) {
+    try {
+      localStorage.setItem("fadeEditorTheme", nextTheme);
+    } catch (error) {
+      setStatus("Theme changed for this session.");
+    }
   }
 
   function cssColor(name) {
@@ -324,9 +341,11 @@
   function setTheme(nextTheme) {
     theme = nextTheme === "dark" ? "dark" : "light";
     root.dataset.theme = theme;
+    body.dataset.theme = theme;
+    body.classList.toggle("theme-dark", theme === "dark");
     themeBtn.textContent = theme === "dark" ? "Light mode" : "Dark mode";
     themeBtn.setAttribute("aria-pressed", String(theme === "dark"));
-    localStorage.setItem("fadeEditorTheme", theme);
+    saveTheme(theme);
     render();
   }
 
