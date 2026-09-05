@@ -352,7 +352,7 @@ __hwinterrupt void irq3(void){
 
 	vic_setmode(VICM_TEXT_ECM, SCREEN0, FONTS0);
 	vic.color_back1 = COLOR_1;
-	vic.color_back2 = 0x0e;
+	vic.color_back2 = COLOR_2;
 
 #ifdef _DEBUG_
 	vic.color_border = 0x02;
@@ -445,11 +445,11 @@ int main(void){
 	memset(COLS+(40*10), COLOR_4, 40*1);
 
 	memset(COLS+(40*16), 0x00, 40*1);
-	memset(COLS+(40*17), 0x06, 40*1);
+	memset(COLS+(40*17), COLOR_1, 40*1);
 	memset(COLS+(40*18), 0x0f, 40*1);
 
 	memset(COLS+(40*20), 0x01, 40*1);
-	memset(COLS+(40*21), 0x06, 40*1);
+	memset(COLS+(40*21), COLOR_1, 40*1);
 	memset(COLS+(40*22), 0x00, 40*1);
 
 	COLS[40+20]=COLOR_5;

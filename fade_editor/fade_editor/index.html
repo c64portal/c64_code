@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fade Map Editor</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="app">
+      <aside class="toolbar" aria-label="Fade controls">
+        <div class="tool-group">
+          <button id="loadFadeBtn" type="button">Load fade</button>
+          <button id="saveFadeBtn" type="button">Save fade</button>
+          <button id="loadImageBtn" type="button">Load pic</button>
+        </div>
+
+        <div class="tool-group">
+          <button id="clearBtn" type="button">Clear fade</button>
+          <button id="undoBtn" type="button" aria-label="Undo">Undo</button>
+          <button id="redoBtn" type="button" aria-label="Redo">Redo</button>
+          <button id="manualBtn" type="button" aria-pressed="false">Manual</button>
+        </div>
+
+        <section class="phase-panel" aria-labelledby="phaseTitle">
+          <h1 id="phaseTitle">Phase</h1>
+          <output id="phaseValue" class="phase-value">1</output>
+          <div class="phase-grid" role="group" aria-label="Change phase">
+            <button id="prev10Btn" type="button">&lt;&lt;</button>
+            <button id="prevBtn" type="button">&lt;</button>
+            <button id="nextBtn" type="button">&gt;</button>
+            <button id="next10Btn" type="button">&gt;&gt;</button>
+          </div>
+          <label class="field">
+            <span>Exact</span>
+            <input id="phaseInput" type="number" min="1" max="126" value="1">
+          </label>
+        </section>
+
+        <section class="mode-panel" aria-label="Paint mode">
+          <label class="toggle">
+            <input id="showValuesInput" type="checkbox" checked>
+            <span>Show values</span>
+          </label>
+          <label class="toggle">
+            <input id="showGridInput" type="checkbox" checked>
+            <span>Grid</span>
+          </label>
+          <label class="field">
+            <span>Pic opacity</span>
+            <input id="opacityInput" type="range" min="0" max="100" value="50">
+          </label>
+        </section>
+
+        <div class="status" id="status" role="status">Ready. Left paint, right erase.</div>
+      </aside>
+
+      <section class="workbench" aria-label="Fade map">
+        <div class="canvas-wrap">
+          <canvas id="editorCanvas" width="800" height="500"></canvas>
+        </div>
+      </section>
+
+      <section id="manualView" class="manual-view" aria-label="Manual" hidden>
+        <article class="manual">
+          <header>
+            <p class="manual-kicker">Fade Map Editor</p>
+            <h2>Manual</h2>
+          </header>
+
+          <section>
+            <h3>Project Context</h3>
+            <p>
+              This project contains a browser-based fade map editor and C code
+              showing how to use the generated fade tables in a C64 program.
+              The target platforms are the Commodore 64 and the Commodore 64
+              Ultimate.
+              It is based on an older tool and example by Zielok, described in
+              the CSDB release at
+              <a href="https://csdb.dk/release/?id=100002">csdb.dk/release/?id=100002</a>.
+              The generated <code>.fade</code> files use the same simple format,
+              so they can also be used with Zielok's example ASM code.
+            </p>
+          </section>
+
+          <section>
+            <h3>How This Editor Was Made</h3>
+            <p>
+              The browser editor was built from Zielok's original Java /
+              Processing tool. The original JAR was decompiled and its behavior
+              was used as the reference for the new HTML5 / JavaScript version.
+            </p>
+            <p>
+              Codex was used to analyze the decompiled source and build the
+              modern HTML/JS editor. The work was done with the GPT-5.5 model
+              using medium reasoning effort.
+            </p>
+            <p>
+              The Oscar64 C code in this project was created from Zielok's
+              example ASM code. Codex helped refactor the ASM approach into C
+              while keeping the generated <code>.fade</code> table format
+              compatible.
+            </p>
+          </section>
+
+          <section>
+            <h3>What This Tool Is</h3>
+            <p>
+              Fade Map Editor is a small browser-based editor for creating C64
+              fade-in timing maps. It lets you paint a 40 x 25 screen map where
+              each cell stores the frame number at which that character cell
+              should begin fading in.
+            </p>
+          </section>
+
+          <section>
+            <h3>How To Use It</h3>
+            <ol>
+              <li>Load a reference picture with <strong>Load pic</strong>, if you want a visual guide under the grid.</li>
+              <li>Choose the current fade phase with the arrow buttons, the exact number field, or the keyboard arrow keys.</li>
+              <li>Paint cells on the 40 x 25 map with the left mouse button.</li>
+              <li>Move to the next phase and paint the next group of cells.</li>
+              <li>Erase cells with the right mouse button when needed.</li>
+              <li>Save the finished map with <strong>Save fade</strong>.</li>
+            </ol>
+          </section>
+
+          <section>
+            <h3>Output</h3>
+            <p>
+              The editor saves a raw 1000-byte binary <code>.fade</code> file.
+              The file contains one byte per C64 screen cell, stored row by row:
+              <code>offset = x + y * 40</code>. A value of <code>0</code> means
+              the cell has no fade phase assigned. Values from <code>1</code> to
+              <code>126</code> are fade start phases.
+            </p>
+          </section>
+
+          <section>
+            <h3>Controls And Features</h3>
+            <dl>
+              <dt>Load fade</dt>
+              <dd>Loads an existing 1000-byte fade map into the grid.</dd>
+              <dt>Save fade</dt>
+              <dd>Saves the current grid as a binary <code>.fade</code> file.</dd>
+              <dt>Load pic</dt>
+              <dd>Loads an image as a stretched 800 x 500 reference background behind the grid.</dd>
+              <dt>Clear fade</dt>
+              <dd>Clears all assigned cells and returns the map to zeros.</dd>
+              <dt>Undo / Redo</dt>
+              <dd>Steps backward or forward through recent paint, erase, load, and clear changes.</dd>
+              <dt>Phase</dt>
+              <dd>The number painted into cells. Use <strong>&lt;</strong> and <strong>&gt;</strong> for one step, <strong>&lt;&lt;</strong> and <strong>&gt;&gt;</strong> for ten steps, or enter an exact value.</dd>
+              <dt>Keyboard</dt>
+              <dd><strong>Left Arrow</strong> selects the previous phase. <strong>Right Arrow</strong> selects the next phase. Hold <strong>Shift</strong> with either arrow to move by ten phases.</dd>
+              <dt>Show values</dt>
+              <dd>Shows or hides the numeric phase labels inside painted cells.</dd>
+              <dt>Grid</dt>
+              <dd>Shows or hides the 40 x 25 grid overlay.</dd>
+              <dt>Pic opacity</dt>
+              <dd>Changes how strongly the loaded reference picture appears under the map.</dd>
+            </dl>
+          </section>
+        </article>
+      </section>
+    </main>
+
+    <input id="fadeInput" type="file" accept=".fade,application/octet-stream" hidden>
+    <input id="imageInput" type="file" accept="image/png,image/jpeg,image/bmp,image/webp" hidden>
+
+    <script src="app.js"></script>
+  </body>
+</html>
